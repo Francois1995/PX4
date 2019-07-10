@@ -96,6 +96,7 @@ px4_add_board(
 		param
 		perf
 		pwm
+		pwm_test
 		reboot
 		reflect
 		sd_bench
