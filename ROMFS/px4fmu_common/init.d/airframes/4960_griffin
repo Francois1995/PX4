@@ -85,6 +85,11 @@ fi
 mavlink stop-all
 mavlink start -d /dev/ttyS1 -b 921600 -r 20000
 
+if param compare SYS_HITL 0
+then
+	motor_current_mcp3428 start
+fi
+
 set MIXER quad_x
 set MIXER_AUX mount_legs
 

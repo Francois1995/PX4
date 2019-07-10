@@ -40,6 +40,7 @@ px4_add_board(
 		lights/rgbled_ncp5623c
 		lights/rgbled_pwm
 		magnetometer # all available magnetometer drivers
+		motor_current/mcp3428 # custom motor current module
 		#md25
 		mkblctrl
 		pca9685
