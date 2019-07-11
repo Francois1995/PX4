@@ -145,11 +145,26 @@ PWMSim::subscribe()
 
 void PWMSim::update_params()
 {
+	int i;
+
 	// multicopter air-mode
 	param_t param_handle = param_find("MC_AIRMODE");
 
 	if (param_handle != PARAM_INVALID) {
 		param_get(param_handle, &_airmode);
+	}
+
+	// PWM scaling
+	for(i = 0 ; i < 8 ; i++) {
+		char pwm_main_scale[16];
+		sprintf(pwm_main_scale, "PWM_MAIN_SCALE%d", i+1);
+		param_handle = param_find(pwm_main_scale);
+		if (param_handle != PARAM_INVALID) {
+			float pwm_scaling;
+			param_get(param_handle, &pwm_scaling);
+
+			_pwm_scaling[i] = pwm_scaling;
+		}
 	}
 }
 
@@ -256,6 +271,10 @@ PWMSim::run()
 				if (_armed && sane_mixer_output) {
 					/* scale for PWM output 1000 - 2000us */
 					_actuator_outputs.output[i] = 1500 + (500 * _actuator_outputs.output[i]);
+					// Normalize only when above min PWM
+					if(_actuator_outputs.output[i] > _pwm_min[i] && i < 8) {
+						_actuator_outputs.output[i] *= _pwm_scaling[i];
+					}
 					_actuator_outputs.output[i] = math::constrain(_actuator_outputs.output[i], (float)_pwm_min[i], (float)_pwm_max[i]);
 
 				} else {

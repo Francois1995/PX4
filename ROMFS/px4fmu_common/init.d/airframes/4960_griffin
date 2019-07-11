@@ -80,6 +80,11 @@ then
 
 	param set RTL_DESCEND_ALT 10.0
 	param set RTL_RETURN_ALT 10.0
+
+	param set PWM_MAIN_SCALE1 1.01315789
+	param set PWM_MAIN_SCALE2 1.00442478
+	param set PWM_MAIN_SCALE3 1.00074019
+	param set PWM_MAIN_SCALE4 1.00000000
 fi
 
 mavlink stop-all

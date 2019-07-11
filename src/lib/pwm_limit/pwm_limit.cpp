@@ -57,10 +57,9 @@ void pwm_limit_init(pwm_limit_t *limit)
 }
 
 void pwm_limit_calc(const bool armed, const bool pre_armed, const unsigned num_channels, const uint16_t reverse_mask,
-		    const uint16_t *disarmed_pwm, const uint16_t *min_pwm, const uint16_t *max_pwm,
+		    const uint16_t *disarmed_pwm, const uint16_t *min_pwm, const uint16_t *max_pwm, const float *pwm_scaling,
 		    const float *output, uint16_t *effective_pwm, pwm_limit_t *limit)
 {
-
 	/* first evaluate state changes */
 	switch (limit->state) {
 	case PWM_LIMIT_STATE_INIT:
@@ -180,6 +179,10 @@ void pwm_limit_calc(const bool armed, const bool pre_armed, const unsigned num_c
 				}
 
 				effective_pwm[i] = control_value * (max_pwm[i] - ramp_min_pwm) / 2 + (max_pwm[i] + ramp_min_pwm) / 2;
+				// Normalize only when above armed PWM
+				if(effective_pwm[i] > min_pwm[i]) {
+					effective_pwm[i] *= pwm_scaling[i];
+				}
 
 				/* last line of defense against invalid inputs */
 				if (effective_pwm[i] < ramp_min_pwm) {
@@ -209,6 +212,10 @@ void pwm_limit_calc(const bool armed, const bool pre_armed, const unsigned num_c
 			}
 
 			effective_pwm[i] = control_value * (max_pwm[i] - min_pwm[i]) / 2 + (max_pwm[i] + min_pwm[i]) / 2;
+			// Normalize only when above armed PWM
+			if(effective_pwm[i] > min_pwm[i]) {
+				effective_pwm[i] *= pwm_scaling[i];
+			}
 
 			/* last line of defense against invalid inputs */
 			if (effective_pwm[i] < min_pwm[i]) {
