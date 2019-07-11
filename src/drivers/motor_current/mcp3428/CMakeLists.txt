@@ -36,6 +36,7 @@ px4_add_module(
 	MAIN motor_current_mcp3428
 	COMPILE_FLAGS
 		-Wno-sign-compare
+		-Wno-cast-align
 	SRCS
 		motor_current_mcp3428.cpp
 	DEPENDS
