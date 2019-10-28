@@ -63,7 +63,7 @@ param set MPC_VEL_MANUAL 12.0
 param set MPC_Z_VEL_MAX_DN 1.0
 param set MPC_Z_VEL_MAX_UP 3.0
 
-param set MIS_TAKEOFF_ALT 5.0
+param set MIS_TAKEOFF_ALT 20
 param set RTL_DESCEND_ALT 10.0
 param set RTL_RETURN_ALT 10.0
 param set MPC_TKO_RAMP_T 0.0
